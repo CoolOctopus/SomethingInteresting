@@ -4,4 +4,4 @@
 ## 目录
 | 项目 | 日期 | 源码 | 预览 |
 |:-- | :-- | :-- | :-- |
-| 搞怪请假网页 | 2025/9/29 | <a href="./AskTheCounselorForLeave">链接</a> | <a href="https://cooloctopus.github.io/dafp/AskTheCounselorForLeave/index.html">链接</a>
+| 搞怪请假网页 | 2025/9/29 | <a href="./AskTheCounselorForLeave">工程</a> | <a href="https://cooloctopus.github.io/dafp/AskTheCounselorForLeave/index.html">链接</a>
