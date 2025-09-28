@@ -133,7 +133,7 @@
 		submitBtn.addEventListener('click', function() {
 			var mailTo = "wujipro@qq.com",
 			    subject = "有一个创意",
-			    body = ideaInput.textContent;
+			    body = ideaInput.value;
 
 			if (body===null || body.trim()==='') {
 				alert("内容不能为空");
