@@ -14,21 +14,135 @@
         
         body {
             background-color: #f5f5f5;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
         }
-        
-		li {
-			list-style: decimal;
+
+        header {
+        	padding: 10px 20px;
+        	display: flex;
+        	justify-content: space-between;
+        }
+
+        main {
+        	padding: 20px;
+        }
+
+        input {
+        	border: none;
+        }
+		
+		input:hover {
+			border: none;
 		}
+
+		.container {
+			width: 100%;
+		    padding: 20px;
+		    box-shadow: -7px -4px 6px 0px #ccc inset, 7px 5px 6px 0px #ccc inset;
+		    border-radius: 10px;
+		}
+
+		#project-table-section {
+			min-height: 50vh;
+			margin-bottom: 30px;
+		}
+
+		#project-table {
+			width: 100%;
+			text-align: left;
+			border-spacing: 5px 10px;
+		}
+
+		#project-table thead th {
+			margin-bottom: 8px;
+		}
+
+		#submit-idea-section {
+			position: relative;
+			min-height: 80px;
+		}
+
+		#idea-input {
+			width: 100%;
+		    height: 100%;
+		    background-color: transparent;
+			word-wrap: break-word;
+		    white-space: pre-wrap;
+		    overflow-wrap: break-word;
+		}
+
+		#submit-btn {
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
+			cursor: pointer;
+		}
+
+
+
 	</style>
 </head>
 <body>
-	<ul>
-		<li><a href="./AskTheCounselorForLeave/index.html">搞怪请假网页设计</a></li>
-	</ul>
+	<header>
+		<div>当前项目数：<span id="project-count">0<span></div>
+		<div>目标进度：<span id="numerator">0</span>/999</div>
+	</header>
+	<main>
+		<div id="project-table-section" class="container">
+			<table id="project-table">
+				<thead>
+		            <tr>
+		                <th>Name</th>
+		                <th>Date</th>
+		                <th>Idea</th>
+		            </tr>
+		        </thead>
+				<tbody>
+					<tr>
+						<td><a href="./AskTheCounselorForLeave/index.html">搞怪请假网页设计</a></td>
+						<td>2025/9/29</td>
+						<td>@流连似水流年</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+
+		<div id="submit-idea-section" class="container">
+			<textarea placeholder="我有好创意" id="idea-input" rows="4" maxlength="300"></textarea>
+			<button id="submit-btn">发送邮件</button>
+		</div>
+	</main>
+	
+	<script>
+		// DOM
+		const projectCountEl = document.getElementById('project-count');
+		const numeratorEl = document.getElementById('numerator');
+		const submitBtn = document.getElementById('submit-btn');
+		const ideaInput = document.getElementById('idea-input');
+
+
+		// 初始变量
+		let projectCount = document.querySelectorAll('tbody tr').length;
+
+		// 赋值
+		projectCountEl.textContent = projectCount;
+		numeratorEl.textContent = projectCount;
+
+		// 发送按钮点击事件
+		submitBtn.addEventListener('click', function() {
+			var mailTo = "wujipro@qq.com",
+			    subject = "有一个创意",
+			    body = ideaInput.textContent;
+
+			if (body===null || body.trim()==='') {
+				alert("内容不能为空");
+				return;
+			}
+			var url = "mailto:"+encodeURIComponent(mailTo)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+			window.location = url;
+		});
+	
+	</script>
 </body>
 </html>
