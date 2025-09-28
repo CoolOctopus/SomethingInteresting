@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>请假申请</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content {
+            padding: 35px 20px;
+            border-top: 4px solid;
+            border-image: linear-gradient(to right, #3f3f3f, #ffffff) 1;
+        }
+
+
+        h1 {
+            font-size: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+        
+        .application-text {
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 120px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        #agree-btn {
+            background-color: rgb(63 63 63 / 1);
+            color: white;
+            height: 40px;
+            letter-spacing: 1px;
+            z-index: 9;
+        }
+        
+        #agree-btn:hover {
+            background-color: rgb(63 63 63 / 85%);
+        }
+        
+        #reject-btn {
+            background-color: rgb(244 67 54 / 1);
+            color: white;
+            height: 40px;
+            letter-spacing: 1px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9;
+        }
+        
+        #reject-btn:hover {
+            background-color: rgb(244 67 54 / 85%);
+        }
+        
+        .counter {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .footer-text {
+            font-size: 16px;
+            text-align: center;
+            color: red;
+            font-style: italic;
+            opacity: 0;
+        }
+        
+        .agreement-section {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .agreement-title {
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .thank-you {
+            color: #4CAF50;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .countdown {
+            color: #666;
+            margin-top: 15px;
+        }
+
+        .opacity-1 {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="content">
+            <h1>请假申请</h1>
+        
+            <div class="application-text">
+                导员我想请假，如果你点到拒绝我就国庆好好学习
+            </div>
+            
+            <div class="buttons-container">
+                <button id="reject-btn">拒绝</button>
+                <button id="agree-btn">同意</button>
+            </div>
+            
+            <div class="counter">
+                拒绝按钮被点击 <span id="reject-count">0</span> 次
+            </div>
+            
+            <div class="footer-text" id="footer-text">
+                求求了
+            </div>
+            
+            <div class="agreement-section" id="agreement-section">
+                <div class="thank-you">
+                    导员太感谢了，我回来给你带我们家乡的甜品绝味！
+                </div>
+                <div class="countdown" id="countdown">
+                    申请将在 <span id="countdown-number">9</span> 秒后确认...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const rejectBtn = document.getElementById('reject-btn');
+        const agreeBtn = document.getElementById('agree-btn');
+        const rejectCountEl = document.getElementById('reject-count');
+        const agreementSection = document.getElementById('agreement-section');
+        const countdownEl = document.getElementById('countdown-number');
+        const footerTextEl = document.getElementById('footer-text');
+
+        
+        // 初始化变量
+        let rejectCount = 0;
+        let countdown = 9;
+        let countdownInterval;
+        
+        // 拒绝按钮点击事件
+        rejectBtn.addEventListener('click', function() {
+            rejectCount++;
+            rejectCountEl.textContent = rejectCount;
+            
+            // 随机移动拒绝按钮
+            moveRejectButton();
+
+            // 拒绝达到9次，显示“求求了”
+            if (!footerTextEl.classList.contains('opacity-1') && rejectCount>=10) {
+                footerTextEl.classList.add('opacity-1');
+            }
+        });
+        
+        // 同意按钮点击事件
+        agreeBtn.addEventListener('click', function() {
+            // 禁止按钮点击
+            agreeBtn.disabled = true;
+            rejectBtn.disabled = true;
+            agreeBtn.style.cursor = "not-allowed";
+            rejectBtn.style.cursor = "not-allowed";
+
+            // 更改副标题
+            document.querySelector('.application-text').textContent = '请假申请已同意！祝您假期愉快！';
+
+            // 显示同意后的内容
+            agreementSection.style.display = 'block';
+
+            // 隐藏原始内容
+            // document.querySelector('.counter').style.display = 'none';
+            document.querySelector('.footer-text').style.display = 'none';
+            
+            // 开始倒计时
+            countdownInterval = setInterval(function() {
+                countdown--;
+                countdownEl.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    // 这里可以添加倒计时结束后的操作
+                    // 比如提交表单或跳转页面
+                }
+            }, 1000);
+        });
+        
+        // 移动拒绝按钮的函数
+        function moveRejectButton() {
+            const container = document.querySelector('.buttons-container');
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = rejectBtn.getBoundingClientRect();
+            
+            // 计算可移动的范围（确保按钮完全在容器内）
+            const maxX = containerRect.width - buttonRect.width;
+            const maxY = containerRect.height - buttonRect.height;
+            
+            // 生成随机位置
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // 设置新位置
+            rejectBtn.style.left = randomX + 'px';
+            rejectBtn.style.top = randomY + 'px';
+        }
+        
+        // 初始移动一次按钮，使其不在默认位置
+        moveRejectButton();
+    </script>
+</body>
+</html>
