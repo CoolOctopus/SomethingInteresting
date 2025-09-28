@@ -3,5 +3,5 @@
 
 ## 目录
 | 项目 | 日期 | 预览 |
-|:== | :== | :== |
+|:-- | :-- | :-- |
 | 搞怪请假网页 | 2025/9/29 | <a href="./AskTheCounselorForLeave/index.html">链接</a>
