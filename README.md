@@ -1,6 +1,6 @@
 # dafp
-- 简介：dafp = do a fun project 意为做一个有趣的项目，当然这里并不是只有一个项目，也可以把这件事本身理解为有趣的项目。
-- 网址：[https://cooloctopus.github.io/dafp/](https://cooloctopus.github.io/dafp/)
+简介：dafp = do a fun project 意为做一个有趣的项目，当然这里并不是只有一个项目，也可以把这件事本身理解为有趣的项目。 
+网址：[https://cooloctopus.github.io/dafp/](https://cooloctopus.github.io/dafp/) 
 
 
 ## 目录
