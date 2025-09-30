@@ -69,7 +69,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.1s;
+            transition: all 0.2s;
         }
         
         #agree-btn {
@@ -112,6 +112,10 @@
             font-style: italic;
             opacity: 0;
         }
+
+        .footer-text.show {
+            opacity: 1;
+        }
         
         .agreement-section {
             display: none;
@@ -138,13 +142,47 @@
             margin-top: 15px;
         }
 
-        .opacity-1 {
+        
+        .message-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .message {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+        
+        .message.show {
+            transform: translateY(0);
             opacity: 1;
+        }
+        
+        .message.hide {
+            transform: translateY(-100px);
+            opacity: 0;
         }
 
     </style>
 </head>
 <body>
+    <div class="message-container" id="message-container">
+        <!-- 消息将在这里动态显示 -->
+    </div>
+
     <div class="container">
         <div class="content">
             <h1>请假申请</h1>
@@ -185,29 +223,54 @@
         const agreementSection = document.getElementById('agreement-section');
         const countdownEl = document.getElementById('countdown-number');
         const footerTextEl = document.getElementById('footer-text');
+        const messageContainer = document.getElementById('message-container');
 
         
         // 初始化变量
         let rejectCount = 0;
         let countdown = 9;
         let countdownInterval;
-        
-        // 拒绝按钮点击事件
-        rejectBtn.addEventListener('mouseover', function() {
+        const messages = [
+            "🥺您真是一本正经!",
+            "😉点击同意有惊喜哦！",
+            "🥺您真是刚正不阿！",
+            "🥺您真是冷酷无情！",
+            "😉不想看看同意之后有什么吗？",
+            "😭您真是心如磐石！",
+            "😭您真是铁石心肠!",
+            "👍️我愿称您为心硬的神!",
+            "🤬不和你玩了！"
+        ];
+        let messageIndex = 0;
+
+        // 拒绝按钮鼠标悬浮事件处理函数
+        const onMouseoverRejectBtn = function () {
             rejectCount++;
             rejectCountEl.textContent = rejectCount;
             
             // 随机移动拒绝按钮
             moveRejectButton();
 
-            // 拒绝达到9次，显示“求求了”
-            if (!footerTextEl.classList.contains('opacity-1') && rejectCount>=10) {
-                footerTextEl.classList.add('opacity-1');
+            // 拒绝达到10次，显示“求求了”
+            if (rejectCount >= 10) {
+                footerTextEl.classList.add('show');
             }
-        });
-        
-        // 同意按钮点击事件
-        agreeBtn.addEventListener('click', function() {
+
+            // 每-次显示一条消息
+            if (rejectCount % 6 === 0) {
+                showMessage();
+            }
+
+            // 当消息循环一遍，重新刷新页面
+            if (messageIndex >= messages.length) {
+                setTimeout(() => {
+                    location.reload();
+                }, 2500);
+            }
+        }
+
+        // 点击事件处理函数
+        const onClickAgreeBtn = function () {
             // 禁止按钮点击
             agreeBtn.disabled = true;
             rejectBtn.disabled = true;
@@ -221,9 +284,11 @@
             agreementSection.style.display = 'block';
 
             // 隐藏原始内容
-            // document.querySelector('.counter').style.display = 'none';
-            document.querySelector('.footer-text').style.display = 'none';
-            
+            footerTextEl.classList.remove('show');
+
+            // 删除按钮移动事件
+            rejectBtn.removeEventListener('mouseover', onMouseoverRejectBtn);
+
             // 开始倒计时
             countdownInterval = setInterval(function() {
                 countdown--;
@@ -235,7 +300,13 @@
                     // 比如提交表单或跳转页面
                 }
             }, 1000);
-        });
+        }
+        
+        // 绑定拒绝按钮鼠标悬浮事件
+        rejectBtn.addEventListener('mouseover', onMouseoverRejectBtn);
+        
+        // 绑定同意按钮点击事件
+        agreeBtn.addEventListener('click', onClickAgreeBtn);
         
         // 移动拒绝按钮的函数
         function moveRejectButton() {
@@ -254,6 +325,38 @@
             // 设置新位置
             rejectBtn.style.left = randomX + 'px';
             rejectBtn.style.top = randomY + 'px';
+        }
+
+        // 显示消息的函数
+        function showMessage() {
+            // 创建消息元素
+            const messageEl = document.createElement('div');
+            messageEl.className = 'message';
+            messageEl.textContent = messages[messageIndex];
+            
+            // 添加到容器
+            messageContainer.appendChild(messageEl);
+            
+            // 显示消息（滑入）
+            setTimeout(() => {
+                messageEl.classList.add('show');
+            }, 10);
+            
+            // 2秒后隐藏消息（滑出）
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+                messageEl.classList.add('hide');
+                
+                // 动画完成后移除元素
+                setTimeout(() => {
+                    messageContainer.removeChild(messageEl);
+                }, 500);
+            }, 2000);
+            
+            // 更新消息索引，循环使用
+            // messageIndex = (messageIndex + 1) % messages.length;
+            
+            messageIndex = messageIndex + 1;
         }
         
         // 初始移动一次按钮，使其不在默认位置
