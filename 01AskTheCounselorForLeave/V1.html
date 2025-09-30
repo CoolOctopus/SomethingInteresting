@@ -14,7 +14,7 @@
         
         body {
             background-color: #f5f5f5;
-            padding: 20px;
+            /*padding: 20px;*/
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,11 +32,10 @@
         }
 
         .content {
-            padding: 35px 20px;
+            padding: 35px 10px;
             border-top: 4px solid;
             border-image: linear-gradient(to right, #3f3f3f, #ffffff) 1;
         }
-
 
         h1 {
             font-size: 25px;
@@ -254,7 +253,7 @@
                 footerTextEl.classList.add('show');
             }
             
-            // 每9次显示一条消息
+            // 每-次显示一条消息
             if (rejectCount % 6 === 0) {
                 showMessage();
             }
